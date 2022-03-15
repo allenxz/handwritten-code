@@ -1,9 +1,4 @@
-function inheritPrototype(Sub, Super) {
-  const subPrototype = Object.create(Super.prototype)
-  subPrototype.construction = Sub
-  Sub.prototype = subPrototype
-}
-
+// 寄生组合继承
 function Super (name) {
   this.name = name
 }
@@ -16,7 +11,22 @@ function Sub (name) {
   Super.call(this, name)
 }
 
-inheritPrototype(Sub, Super)
+// 更简洁的实现
+Sub.prototype = Object.create(Super.prototype, {
+  construction: {
+    value: Sub,
+    writable: true,
+    enumerable: false,
+    configurable: true
+  }
+})
+
+// function inheritPrototype(Sub, Super) {
+//   const subPrototype = Object.create(Super.prototype)
+//   subPrototype.construction = Sub
+//   Sub.prototype = subPrototype
+// }
+// inheritPrototype(Sub, Super)
 
 // test
 const instance = new Sub('joe')
